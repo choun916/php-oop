@@ -4,7 +4,6 @@ use PhpOop\Core\Service\Auth\MemberService;
 
 class Member extends MY_Controller
 {
-
     private MemberService $memberService;
 
     public function __construct()
@@ -27,12 +26,12 @@ class Member extends MY_Controller
 
         try {
             $result = $this->memberService->join($email, $name, $password);
-			$result === true ? $this->SuccessRepponse() : $this->ErrorResponse();
+			$result === true ? $this->successRepponse() : $this->errorResponse();
         } catch (\Exception $e) {
-			$this->ErrorResponse($e->getMessage());
+			$this->errorResponse($e->getMessage());
         }
 
-		$this->ErrorResponse();
+		$this->errorResponse();
     }
 
     public function login()
@@ -42,11 +41,11 @@ class Member extends MY_Controller
 
         try {
             $result = $this->memberService->login($email, $password);
-            $result === true ? $this->SuccessRepponse() : $this->ErrorResponse();
+            $result === true ? $this->successRepponse() : $this->errorResponse();
         } catch (\Exception $e) {
-            $this->ErrorResponse($e->getMessage());
+            $this->errorResponse($e->getMessage());
         }
 
-        $this->ErrorResponse();
+        $this->errorResponse();
     }
 }

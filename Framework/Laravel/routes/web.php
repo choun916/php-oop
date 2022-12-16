@@ -15,7 +15,5 @@ use PhpOop\Core\Php_oop;
 */
 
 Route::get('/', function () {
-    $php_oop = new Php_oop();
-    print_r($php_oop->hello());
     return view('welcome');
 });

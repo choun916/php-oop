@@ -1,9 +1,11 @@
-version: '3.7'
+version: "3.7"
 services:
-  web-ci:
+  web-laravel:
     build: .
     ports:
-      - 8020:80
+      - "8020:80"
     volumes:
       - ./:/var/www/html
       - ../../Core/:/var/www/core
+    extra_hosts:
+        - 'host.docker.internal:host-gateway'

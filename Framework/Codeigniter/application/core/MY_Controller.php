@@ -9,7 +9,7 @@ class MY_Controller extends CI_Controller {
 		parent::__construct();
 	}
 
-	private function response($data=['status' => 'OK'], int $status=200): void
+	private function response($data, int $status=200): void
 	{
 		$this->output
 				->set_status_header($status)
@@ -19,14 +19,14 @@ class MY_Controller extends CI_Controller {
 		exit;
 	}
 
-	public function ErrorResponse(string $message=''): void
+	public function errorResponse(string $message=''): void
 	{
 		$this->response(['status' => 'ERROR', 'message' =>$message]);
 
 	}
 
-	public function SuccessRepponse()
+	public function successRepponse($data=[]): void
 	{
-		$this->response(['status' => 'OK']);
+		$this->response(['status' => 'OK', 'data' => $data]);
 	}
 }

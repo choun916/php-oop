@@ -7,11 +7,6 @@ use PhpOop\Core\Repository\Auth\MemberRepositoryInterface;
 
 class MemberAuthRepostory extends CI_Model implements MemberRepositoryInterface
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function create(CreateMemberDto $createMemberDto): bool
     {
         $this->db->insert('members', [

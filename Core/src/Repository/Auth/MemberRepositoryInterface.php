@@ -7,7 +7,6 @@ use PhpOop\Core\Repository\Auth\Dto\LoginMemberDto;
 
 interface MemberRepositoryInterface
 {
-    public function __construct();
     public function create(CreateMemberDto $createMemberDto): bool;
     public function getEmailByLoginDto(LoginMemberDto $loginMemberDto): string;
 }
