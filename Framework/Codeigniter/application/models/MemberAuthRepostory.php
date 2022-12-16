@@ -2,6 +2,7 @@
 
 use PhpOop\Core\Exception\DuplicateKeyException;
 use PhpOop\Core\Repository\Auth\Dto\CreateMemberDto;
+use PhpOop\Core\Repository\Auth\Dto\LoginMemberDto;
 use PhpOop\Core\Repository\Auth\MemberRepositoryInterface;
 
 class MemberAuthRepostory extends CI_Model implements MemberRepositoryInterface
@@ -25,27 +26,18 @@ class MemberAuthRepostory extends CI_Model implements MemberRepositoryInterface
         return $this->db->affected_rows() > 0;
     }
 
-    public function get_last_ten_entries()
+    public function getEmailByLoginDto(LoginMemberDto $loginMemberDto): string
     {
-        echo 11111111;
+        $this->db->select('email');
+        $this->db->from('members');
+        $this->db->where([
+            'email' => $loginMemberDto->getEmail(),
+            'password' => $loginMemberDto->getPassword(),
+        ]);
+
+        $query = $this->db->get();
+        $result = $query->row_array();
+
+        return $result['email'] ?? '';
     }
-
-    public function insert_entry()
-    {
-        $this->title = $_POST['title']; // please read the below note
-        $this->content = $_POST['content'];
-        $this->date = time();
-
-        $this->db->insert('entries', $this);
-    }
-
-    public function update_entry()
-    {
-        $this->title = $_POST['title'];
-        $this->content = $_POST['content'];
-        $this->date = time();
-
-        $this->db->update('entries', $this, array('id' => $_POST['id']));
-    }
-
 }

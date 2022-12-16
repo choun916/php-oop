@@ -40,8 +40,13 @@ class Member extends MY_Controller
         $email = $this->input->post('email');
         $password = $this->input->post('password');
 
-        $result = $this->memberService->login($email, $password);
+        try {
+            $result = $this->memberService->login($email, $password);
+            $result === true ? $this->SuccessRepponse() : $this->ErrorResponse();
+        } catch (\Exception $e) {
+            $this->ErrorResponse($e->getMessage());
+        }
 
-        return $result;
+        $this->ErrorResponse();
     }
 }

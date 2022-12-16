@@ -5,6 +5,7 @@ namespace PhpOop\Core\Service\Auth;
 use PhpOop\Core\Exception\WrongEmailException;
 use PhpOop\Core\Exception\WrongPasswordException;
 use PhpOop\Core\Repository\Auth\Dto\CreateMemberDto;
+use PhpOop\Core\Repository\Auth\Dto\LoginMemberDto;
 use PhpOop\Core\Repository\Auth\MemberRepositoryInterface;
 use PhpOop\Core\Validation\EmailValidation;
 use PhpOop\Core\Validation\PasswordValidation;
@@ -42,7 +43,22 @@ class MemberService extends AuthServiceAbstract
 
     public function login(string $email, string $password): bool
     {
-        return true;
+        $emailValidation = new EmailValidation($email);
+        $passwordValidation = new PasswordValidation($password);
+
+        if ($emailValidation->fails()) {
+            throw new WrongEmailException();
+        }
+
+        if ($passwordValidation->fails()) {
+            throw new WrongPasswordException();
+        }
+
+        $loginMemberDto = new LoginMemberDto($email, $password);
+
+        $email = $this->memberRepository->getEmailByLoginDto($loginMemberDto);
+
+        return $loginMemberDto->getEmail() == $email;
     }
 
     public function logout(): bool
