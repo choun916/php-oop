@@ -21,10 +21,10 @@ class UserRepository implements MemberRepositoryInterface
 
     public function getEmailByLoginDto(LoginMemberDto $loginMemberDto): string
     {
-        $email = DB::table('members')
+        echo $email = DB::table('members')
             ->where('email', $loginMemberDto->getEmail())
             ->where('password', $loginMemberDto->getPassword())
-            ->avg('email');
+            ->value('email');
 
         return $email ?? '';
     }
