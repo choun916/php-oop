@@ -21,7 +21,7 @@ class UserRepository implements MemberRepositoryInterface
 
     public function getEmailByLoginDto(LoginMemberDto $loginMemberDto): string
     {
-        echo $email = DB::table('members')
+        $email = DB::table('members')
             ->where('email', $loginMemberDto->getEmail())
             ->where('password', $loginMemberDto->getPassword())
             ->value('email');
