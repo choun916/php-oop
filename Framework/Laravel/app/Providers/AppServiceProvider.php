@@ -2,10 +2,16 @@
 
 namespace App\Providers;
 
+use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
+use PhpOop\Core\Repository\Auth\MemberRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public array $bindings = [
+        MemberRepositoryInterface::class => UserRepository::class
+    ];
+
     /**
      * Register any application services.
      *
@@ -13,7 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**

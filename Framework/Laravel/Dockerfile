@@ -15,8 +15,8 @@ RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 100M/' /usr/local/e
 RUN sed -i 's/post_max_size = 8M/post_max_size = 100M/' /usr/local/etc/php/php.ini
 RUN sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/public/' /etc/apache2/sites-enabled/000-default.conf
 
-RUN sed -i 's/;extension=mysqli/extension=mysqli/' /usr/local/etc/php/php.ini
-RUN sed -i 's/;extension=pdo_mysql/extension=pdo_mysql/' /usr/local/etc/php/php.ini
+RUN #sed -i 's/;extension=mysqli/extension=mysqli/' /usr/local/etc/php/php.ini
+RUN #sed -i 's/;extension=pdo_mysql/extension=pdo_mysql/' /usr/local/etc/php/php.ini
 #RUN sed -i 's/;extension=mbstring/extension=mbstring/' /usr/local/etc/php/php.ini
 
 #RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

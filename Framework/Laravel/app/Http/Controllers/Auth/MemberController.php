@@ -3,19 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepository;
-use App\Models\User;
 use Illuminate\Http\Request;
 use PhpOop\Core\Service\Auth\MemberService;
 
 class MemberController extends Controller
 {
-    private MemberService $memberService;
 
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->memberService = new MemberService($userRepository);
-    }
+    public function __construct(
+        private readonly MemberService $memberService
+    ) {}
 
     public function join(Request $request)
     {
