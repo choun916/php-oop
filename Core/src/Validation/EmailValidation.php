@@ -6,7 +6,8 @@ class EmailValidation extends ValidationAbstract
 {
     protected function validated(): bool
     {
-        return (bool) preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $this->data);
+        $pattern = "/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i";
+        return (bool) preg_match($pattern, $this->data);
     }
     /**
      * @return string

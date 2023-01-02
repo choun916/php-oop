@@ -7,18 +7,6 @@ use Tests\TestCase;
 
 class MemberTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function test_the_application_returns_a_successful_response()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
     public function test_auth_member_join_and_login()
     {
         $member = [

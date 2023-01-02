@@ -3,27 +3,35 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Rules\MemberEmail;
+use App\Rules\MemberName;
+use App\Rules\MemberPassword;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use PhpOop\Core\Controller\MemberControllerInterface;
 use PhpOop\Core\Service\Auth\MemberService;
 
-class MemberController extends Controller
+class MemberController extends Controller implements MemberControllerInterface
 {
-
     public function __construct(
         private readonly MemberService $memberService
     ) {}
 
     public function join(Request $request)
     {
-        $email = $request->input('email');
-        $name = $request->input('name');
-        $password = $request->input('password');
-
         try {
-            $result = $this->memberService->join($email, $name, $password);
-            return $result === true ? response()->success() : response()->error();
+            $validator = Validator::make($request->input(), [
+                'email' => ['required', 'email', new MemberEmail],
+                'name' => ['required', new MemberName],
+                'password' => ['required', new MemberPassword],
+            ]);
+            $validator->passes() ?: response()->error('validation failed');
+            $input = $validator->validated();
+
+            return $this->memberService->join($input['email'], $input['name'], $input['password']) ?
+                response()->success() : response()->error();
         } catch (\Exception $e) {
-            return response()->error($e->getMessage());
+            return response()->error('Exception: '.$e->getMessage());
         }
 
         return response()->error();
@@ -31,14 +39,19 @@ class MemberController extends Controller
 
     public function login(Request $request)
     {
-        $email = $request->input('email');
-        $password = $request->input('password');
-
         try {
-            $result = $this->memberService->login($email, $password);
-            return $result === true ? response()->success() : response()->error();
+            $validator = Validator::make($request->input(), [
+                'email' => ['required', 'email', new MemberEmail],
+                'password' => ['required', new MemberPassword],
+            ]);
+
+            $validator->passes() ?: response()->error('validation failed');
+            $input = $validator->validated();
+
+            return $this->memberService->login($input['email'], $input['password']) ?
+                response()->success() : response()->error();
         } catch (\Exception $e) {
-            return response()->error($e->getMessage());
+            return response()->error('Exception: '.$e->getMessage());
         }
 
         return response()->error();
