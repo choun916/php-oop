@@ -11,12 +11,12 @@
     docker run --name mysql-5.7 -e MYSQL_ROOT_PASSWORD={password} -d -p 3306:3306 mysql:5.7
 
 ### Codeigniter
-    $ cd ./Codeigniter
+    $ cd ./Framework/Codeigniter
     $ docker-compose build --no-cache
     $ docker-compose up -d
 
 ### Laravel
-    $ cd ./Laravel
+    $ cd ./Framework/Laravel
     $ docker-compose build --no-cache
     $ docker-compose up -d
 
