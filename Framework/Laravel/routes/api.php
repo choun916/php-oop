@@ -15,5 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/auth/member/join', [MemberController::class, 'join']);
-Route::post('/auth/member/login', [MemberController::class, 'login']);
+
+Route::middleware('auth:api')->prefix('/auth/member')->group(function ($router) {
+    Route::post('join', [MemberController::class, 'join'])->withoutMiddleware('auth:api');
+    Route::post('login', [MemberController::class, 'login'])->withoutMiddleware('auth:api');
+    Route::get('logout', [MemberController::class, 'logout']);
+    Route::post('refresh', [MemberController::class, 'refresh']);
+    Route::get('profile', [MemberController::class, 'profile']);
+});

@@ -4,6 +4,8 @@ namespace PhpOop\Core\Repository\Auth\Dto;
 
 class CreateMemberDto
 {
+    use PasswordHashTrait;
+
     private string $email;
     private string $name;
     private string $password;
@@ -12,7 +14,8 @@ class CreateMemberDto
     {
         $this->email = $email;
         $this->name = $name;
-        $this->password = strtoupper(hash("sha256", $password));
+
+        $this->password = $this->passwordHash($password);
     }
 
     public function getEmail(): string

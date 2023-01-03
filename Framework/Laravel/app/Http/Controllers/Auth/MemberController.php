@@ -8,10 +8,9 @@ use App\Rules\MemberName;
 use App\Rules\MemberPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use PhpOop\Core\Controller\MemberControllerInterface;
 use PhpOop\Core\Service\Auth\MemberService;
 
-class MemberController extends Controller implements MemberControllerInterface
+class MemberController extends Controller
 {
     public function __construct(
         private readonly MemberService $memberService
@@ -25,7 +24,7 @@ class MemberController extends Controller implements MemberControllerInterface
                 'name' => ['required', new MemberName],
                 'password' => ['required', new MemberPassword],
             ]);
-            $validator->passes() ?: response()->error('validation failed');
+            $validator->passes() ?: response()->error($validator->messages());
             $input = $validator->validated();
 
             return $this->memberService->join($input['email'], $input['name'], $input['password']) ?
@@ -45,15 +44,43 @@ class MemberController extends Controller implements MemberControllerInterface
                 'password' => ['required', new MemberPassword],
             ]);
 
-            $validator->passes() ?: response()->error('validation failed');
+            $validator->passes() ?: response()->error($validator->messages());
             $input = $validator->validated();
 
-            return $this->memberService->login($input['email'], $input['password']) ?
-                response()->success() : response()->error();
+            if (! $accessToken = auth()->attempt($input)) {
+                return response()->error(['error' => 'Unauthorized'], 401);
+            }
+
+            return response()->success([
+                'accessToken' => $accessToken,
+                'tokenType' => 'bearer',
+                'expiresIn' => auth()->factory()->getTTL() * 60
+            ]);
         } catch (\Exception $e) {
             return response()->error('Exception: '.$e->getMessage());
         }
 
         return response()->error();
+    }
+
+    public function refresh()
+    {
+        return response()->success([
+            'accessToken' => auth()->refresh(false, true),
+            'tokenType' => 'bearer',
+            'expiresIn' => auth()->factory()->getTTL() * 60
+        ]);
+    }
+
+    public function profile()
+    {
+        auth()->user();
+        return response()->success(auth()->user());
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+        return response()->success('Successfully logged out');
     }
 }

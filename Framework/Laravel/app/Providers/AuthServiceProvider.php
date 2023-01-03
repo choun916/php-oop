@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        DB::listen(function($query) {
+            Log::info([$query->sql, $query->bindings, $query->time]);
+        });
+
+        Auth::provider('custom', function($app, array $config) {
+            return new CustomUserProvider($app['hash'], $config['model']);
+        });
+
     }
 }
