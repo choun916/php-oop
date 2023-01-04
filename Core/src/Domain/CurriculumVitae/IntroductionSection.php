@@ -8,6 +8,11 @@ class IntroductionSection extends CVSectionAbstract implements CVSectionInterfac
     {
     }
 
+    protected function type(): string
+    {
+        return self::TYPE_INTRODUCTION;
+    }
+
     protected function title(): string
     {
         return '자기소개';
