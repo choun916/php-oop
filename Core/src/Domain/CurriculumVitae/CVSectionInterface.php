@@ -10,4 +10,9 @@ interface CVSectionInterface
     public const TYPE_EDUCTION = 'education';
     public const TYPE_SKILL = 'skill';
 
+    public function id(): ?int;
+    public function type(): string;
+    public function title(): string;
+    public function contents(): array;
+
 }

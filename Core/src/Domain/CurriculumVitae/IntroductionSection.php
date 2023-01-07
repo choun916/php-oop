@@ -2,19 +2,30 @@
 
 namespace PhpOop\Core\Domain\CurriculumVitae;
 
-class IntroductionSection extends CVSectionAbstract implements CVSectionInterface
+class IntroductionSection extends CVSectionAbstract
 {
-    function __construct(private readonly string $contents)
+    private string $contents;
+
+    function __construct(?int $id, string $contents)
     {
+        parent::__construct($id);
+        $this->contents = $contents;
     }
 
-    protected function type(): string
+    public function type(): string
     {
         return self::TYPE_INTRODUCTION;
     }
 
-    protected function title(): string
+    public function title(): string
     {
         return '자기소개';
+    }
+
+    public function contents(): array
+    {
+        return [
+            'contents' => $this->contents
+        ];
     }
 }
