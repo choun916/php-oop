@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpOop\Core\Repository\Auth\Dto;
+namespace PhpOop\Core\Repository\Auth;
 
 trait PasswordHashTrait
 {

@@ -2,17 +2,17 @@
 
 namespace PhpOop\Core\Application\Repository;
 
-use PhpOop\Core\Repository\ConnectionRepositoryAbstract;
+use App\Repositories\RepositoryAbstract;
 
-class CodeigniterRepository extends ConnectionRepositoryAbstract
+class CodeigniterRepository extends RepositoryAbstract
 {
     public function readDB()
     {
-        return $this->readInstance ?? $this->instance->db;
+        return $this->readDB ?? $this->instance->db;
     }
 
-    public function masterDB()
+    public function writeDB()
     {
-        return $this->masterInstance ?? $this->instance->load->database('master', true);
+        return $this->writeDB ?? $this->instance->load->database('master', true);
     }
 }

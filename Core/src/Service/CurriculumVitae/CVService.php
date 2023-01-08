@@ -2,12 +2,13 @@
 
 namespace PhpOop\Core\Service\CurriculumVitae;
 
+use Exception;
+use PhpOop\Core\Domain\CurriculumVitae\CV;
 use PhpOop\Core\Domain\CurriculumVitae\CVBuilder;
 use PhpOop\Core\Repository\CurriculumVitae\CVRepositoryInterface;
 
 class CVService implements CVServiceInterface
 {
-    private array $sectionList;
     private CVRepositoryInterface $cvRepository;
 
     public function __construct(CVRepositoryInterface $cvRepository)
@@ -15,14 +16,31 @@ class CVService implements CVServiceInterface
         $this->cvRepository = $cvRepository;
     }
 
-    public function cvBuilder(): CVBuilder
+    public function cvBuilder(?int $cvId, string $cvTitle): CVBuilder
     {
-        return new CVBuilder();
+        return new CVBuilder($cvId, $cvTitle);
     }
 
-    public function save($cv): bool
+    /**
+     * @throws Exception
+     */
+    public function save(CV $cv): bool
     {
-        $this->cvRepository->insert($cv);
+        try {
+            $this->cvRepository->transaction();
+            $cvId = $this->cvRepository->updateCurriculumVitae($cv->getDto());
+            foreach ($cv as $section)
+            {
+                $section->getData();
+            }
+
+            $this->insert();
+            $this->cvRepository->commit();
+        } catch (Exception $e ) {
+            $this->cvRepository->rollback();
+            throw $e;
+        }
+
         return true;
     }
 }

@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
-use PhpOop\Core\Repository\Auth\Dto\PasswordHashTrait;
+use PhpOop\Core\Repository\Auth\PasswordHashTrait;
 
 class CustomUserProvider extends EloquentUserProvider
 {

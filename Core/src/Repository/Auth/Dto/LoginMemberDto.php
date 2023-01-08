@@ -2,7 +2,10 @@
 
 namespace PhpOop\Core\Repository\Auth\Dto;
 
-class LoginMemberDto
+use PhpOop\Core\Repository\Auth\PasswordHashTrait;
+use PhpOop\Core\Repository\DtoInterface;
+
+class LoginMemberDto implements DtoInterface
 {
     use PasswordHashTrait;
 

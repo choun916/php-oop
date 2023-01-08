@@ -4,14 +4,17 @@ namespace PhpOop\Core\Domain\CurriculumVitae;
 
 use Exception;
 use ReflectionClass;
-use function PHPUnit\Framework\isNull;
 
 class CVBuilder
 {
+    private ?int $cvId;
+    private string $cvTitle;
     private array $sections = [];
 
-    public function __construct()
+    public function __construct(?int $cvId, string $cvTitle)
     {
+        $this->cvId = $cvId;
+        $this->cvTitle = $cvTitle;
     }
 
     /**
@@ -50,9 +53,17 @@ class CVBuilder
         $this->sections = [...$this->sections, $section];
     }
 
-    public function build(): array
+    public function build(): CV
     {
-        return $this->sections;
+        $cv = new CV($this->cvId, ...$this->sections);
+        $this->reset();
+        return $cv;
+    }
+
+    private function reset(): void
+    {
+        $this->cvId = null;
+        $this->sections = [];
     }
 
 }
