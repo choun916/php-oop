@@ -7,7 +7,7 @@ use PhpOop\Core\Repository\ConnectionInterface;
 
 class Connection implements ConnectionInterface
 {
-    private $instance;
+    private object $instance;
 
     public function __construct()
     {
@@ -17,5 +17,20 @@ class Connection implements ConnectionInterface
     public function connection(string $name)
     {
         return $this->instance::connection($name);
+    }
+
+    public function beginTransaction()
+    {
+        $this->instance::beginTransaction();
+    }
+
+    public function commit()
+    {
+        $this->instance::commit();
+    }
+
+    public function rollback()
+    {
+        $this->instance::rollback();
     }
 }

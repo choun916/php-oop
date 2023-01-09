@@ -7,7 +7,7 @@ use PhpOop\Core\Domain\CurriculumVitae\CareerSection;
 use PhpOop\Core\Domain\CurriculumVitae\CVBuilder;
 use PhpOop\Core\Domain\CurriculumVitae\EducationSection;
 use PhpOop\Core\Domain\CurriculumVitae\IntroductionSection;
-use PhpOop\Core\Domain\CurriculumVitae\PorfileSection;
+use PhpOop\Core\Domain\CurriculumVitae\ProfileSection;
 use PhpOop\Core\Domain\CurriculumVitae\SkillSection;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +24,7 @@ final class CVBuilderTest extends TestCase
     public function testProfileSection(): void
     {
         $cvBuilder = new CVBuilder();
-        $cvBuilder->setSection(PorfileSection::class, [
+        $cvBuilder->setSection(ProfileSection::class, [
             'mobile' => '010-1111-1111',
             'email' => 'abcd@email.com',
             'name' => '사용자이름1',

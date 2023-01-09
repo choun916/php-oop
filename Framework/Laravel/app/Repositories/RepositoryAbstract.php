@@ -31,16 +31,16 @@ abstract class RepositoryAbstract implements RepositoryInterface
 
     public function transaction()
     {
-        $this->db::beginTransaction();
+        $this->writeDB->beginTransaction();
     }
 
     public function commit()
     {
-        $this->db::commit();
+        $this->writeDB->commit();
     }
 
     public function rollback()
     {
-        $this->db::rollback();
+        $this->writeDB->rollback();
     }
 }

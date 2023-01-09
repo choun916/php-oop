@@ -7,7 +7,7 @@ use PhpOop\Core\Repository\DtoInterface;
 class CurriculumVitaeDto implements DtoInterface
 {
     private ?int $id;
-    private ?int $title;
+    private string $title;
     // TODO: private string visibility
 
     public function __construct(?int $id, string $title)
@@ -16,7 +16,7 @@ class CurriculumVitaeDto implements DtoInterface
         $this->title = $title;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

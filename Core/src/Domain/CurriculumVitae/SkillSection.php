@@ -2,32 +2,29 @@
 
 namespace PhpOop\Core\Domain\CurriculumVitae;
 
+use PhpOop\Core\Repository\CurriculumVitae\Dto\SkillSectionDto;
+
 class SkillSection extends CVSectionAbstract
 {
-    private array $list;
-
     function __construct(
         ?int $id,
         array $list
     ) {
         parent::__construct($id);
-        $this->list = $list;
+        $this->dto = new SkillSectionDto(
+            $id,
+            $this->type(),
+            $list
+        );
     }
 
     public function type(): string
     {
-        return self::TYPE_EDUCTION;
+        return self::TYPE_SKILL;
     }
 
     public function title(): string
     {
         return '기술';
-    }
-
-    public function contents(): array
-    {
-        return [
-            'list' => $this->list
-        ];
     }
 }

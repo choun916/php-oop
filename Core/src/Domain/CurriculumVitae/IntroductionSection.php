@@ -2,14 +2,18 @@
 
 namespace PhpOop\Core\Domain\CurriculumVitae;
 
+use PhpOop\Core\Repository\CurriculumVitae\Dto\IntroductionSectionDto;
+
 class IntroductionSection extends CVSectionAbstract
 {
-    private string $contents;
-
     function __construct(?int $id, string $contents)
     {
         parent::__construct($id);
-        $this->contents = $contents;
+        $this->dto = new IntroductionSectionDto(
+            $id,
+            $this->type(),
+            $contents
+        );
     }
 
     public function type(): string
@@ -20,12 +24,5 @@ class IntroductionSection extends CVSectionAbstract
     public function title(): string
     {
         return '자기소개';
-    }
-
-    public function contents(): array
-    {
-        return [
-            'contents' => $this->contents
-        ];
     }
 }

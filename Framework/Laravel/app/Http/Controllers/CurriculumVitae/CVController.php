@@ -5,11 +5,12 @@ namespace App\Http\Controllers\CurriculumVitae;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use PhpOop\Core\Domain\CurriculumVitae\CareerSection;
-use PhpOop\Core\Domain\CurriculumVitae\EducationSection;
-use PhpOop\Core\Domain\CurriculumVitae\IntroductionSection;
-use PhpOop\Core\Domain\CurriculumVitae\PorfileSection;
-use PhpOop\Core\Domain\CurriculumVitae\SkillSection;
+use PhpOop\Core\Repository\CurriculumVitae\Dto\CareerSectionDto;
+use PhpOop\Core\Repository\CurriculumVitae\Dto\CurriculumVitaeDto;
+use PhpOop\Core\Repository\CurriculumVitae\Dto\EducationSectionDto;
+use PhpOop\Core\Repository\CurriculumVitae\Dto\IntroductionSectionDto;
+use PhpOop\Core\Repository\CurriculumVitae\Dto\ProfileSectionDto;
+use PhpOop\Core\Repository\CurriculumVitae\Dto\SkillSectionDto;
 use PhpOop\Core\Service\CurriculumVitae\CVService;
 
 class CVController extends Controller
@@ -56,14 +57,16 @@ class CVController extends Controller
                 'skill' => $skillInput,
             ] = $input;
 
-            $cvBuilder = $this->cvService->cvBuilder($cvId, $cvTitle);
-            $cvBuilder->setSection(PorfileSection::class, $profileInput);
-            $cvBuilder->setSection(IntroductionSection::class, $introductionInput);
-            $cvBuilder->setSection(CareerSection::class, ...$careerInput);
-            $cvBuilder->setSection(EducationSection::class, ...$educationInput);
-            $cvBuilder->setSection(SkillSection::class, $skillInput);
+            $result = $this->cvService->save(
+                ...$this->cvService->dtoMapper(CurriculumVitaeDto::class, ['id' => $cvId, 'title' => $cvTitle]),
+                ...$this->cvService->dtoMapper(ProfileSectionDto::class, $profileInput),
+                ...$this->cvService->dtoMapper(IntroductionSectionDto::class, $introductionInput),
+                ...$this->cvService->dtoMapper(CareerSectionDto::class, ...$careerInput),
+                ...$this->cvService->dtoMapper(EducationSectionDto::class, ...$educationInput),
+                ...$this->cvService->dtoMapper(SkillSectionDto::class, $skillInput),
+            );
 
-            return $this->cvService->save($cvBuilder->build()) ? response()->success() : response()->error();
+            return $result ? response()->success() : response()->error();
         } catch (\Exception $e) {
             return response()->error('Exception: ' . $e->getMessage());
         }

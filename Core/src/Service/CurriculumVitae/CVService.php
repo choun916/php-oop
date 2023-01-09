@@ -3,9 +3,11 @@
 namespace PhpOop\Core\Service\CurriculumVitae;
 
 use Exception;
-use PhpOop\Core\Domain\CurriculumVitae\CV;
 use PhpOop\Core\Domain\CurriculumVitae\CVBuilder;
 use PhpOop\Core\Repository\CurriculumVitae\CVRepositoryInterface;
+use PhpOop\Core\Repository\CurriculumVitae\Dto\CurriculumVitaeDto;
+use PhpOop\Core\Repository\CurriculumVitae\Dto\SectionDtoInterface;
+use ReflectionClass;
 
 class CVService implements CVServiceInterface
 {
@@ -24,23 +26,56 @@ class CVService implements CVServiceInterface
     /**
      * @throws Exception
      */
-    public function save(CV $cv): bool
+    public function save(CurriculumVitaeDto $cvDto, SectionDtoInterface ...$sectionDtoList): bool
     {
         try {
             $this->cvRepository->transaction();
-            $cvId = $this->cvRepository->updateCurriculumVitae($cv->getDto());
-            foreach ($cv as $section)
-            {
-                $section->getData();
+
+            $cvId = $this->cvRepository->updateCurriculumVitae($cvDto);
+            foreach ($sectionDtoList as $sectionDto) {
+                $this->cvRepository->updateSection($cvId, $sectionDto);
             }
 
-            $this->insert();
             $this->cvRepository->commit();
-        } catch (Exception $e ) {
+
+        } catch (Exception $e) {
             $this->cvRepository->rollback();
             throw $e;
         }
 
         return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function dtoMapper(string $className, array ...$constructorArgs)
+    {
+        $dtoList = [];
+
+        if (!class_exists($className)) {
+            throw new Exception('class name does not exist: ' . $className);
+        }
+
+        $reflectionClass = new ReflectionClass($className);
+
+        foreach ($constructorArgs as $inputArgs) {
+
+            $newArgs = [];
+            $parameters = $reflectionClass->getConstructor()->getParameters();
+            foreach ($parameters as $param) {
+                $paramName = $param->name;
+                $paramValue = $inputArgs[$paramName] ?? null;
+
+                if (!$param->allowsNull() && is_null($paramValue)) {
+                    throw new Exception('This variable is required: ' . $className . ': ' . $paramName);
+                }
+                $newArgs[] = $paramValue;
+            }
+
+            $dtoList[] = ($reflectionClass->newInstance(...$newArgs));
+        }
+
+        return $dtoList;
     }
 }

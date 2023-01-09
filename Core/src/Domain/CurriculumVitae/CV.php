@@ -2,13 +2,11 @@
 
 namespace PhpOop\Core\Domain\CurriculumVitae;
 
-use Exception;
 use PhpOop\Core\Repository\CurriculumVitae\Dto\CurriculumVitaeDto;
-use PhpOop\Core\Repository\DtoInterface;
 
 class CV
 {
-    private DtoInterface $cvDto;
+    private CurriculumVitaeDto $cvDto;
     private array $sections = [];
     private string $cvTitle;
 
@@ -18,7 +16,7 @@ class CV
         $this->sections = $sections;
     }
 
-    public function getDto(): DtoInterface
+    public function getDto(): CurriculumVitaeDto
     {
         return $this->cvDto;
     }

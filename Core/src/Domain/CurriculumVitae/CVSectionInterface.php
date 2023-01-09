@@ -2,6 +2,8 @@
 
 namespace PhpOop\Core\Domain\CurriculumVitae;
 
+use PhpOop\Core\Repository\DtoInterface;
+
 interface CVSectionInterface
 {
     public const TYPE_PROFILE = 'profile';
@@ -13,6 +15,5 @@ interface CVSectionInterface
     public function id(): ?int;
     public function type(): string;
     public function title(): string;
-    public function contents(): array;
-
+    public function dto(): DtoInterface;
 }
